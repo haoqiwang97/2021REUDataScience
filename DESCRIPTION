@@ -1,6 +1,6 @@
-Package: placeholder
+Package: 2021REUDataScience
 Type: Book
-Title: Does not matter.
+Title: 2021REUDataScience
 Version: 0.0.1
 Imports: bookdown
 Remotes: rstudio/bookdown
