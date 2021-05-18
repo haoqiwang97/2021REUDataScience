@@ -1,5 +1,5 @@
-book_filename: "bookdown-demo"
+book_filename: "2021REUDataScience"
+delete_merged_file: true
 language:
   ui:
     chapter_name: "Chapter "
-delete_merged_file: true
