@@ -1,0 +1,12 @@
+# Syllabus
+
+## Week 1: Install R, R studio
+
+### Synchronous Activities
+
+- Presentation: some codes in R?
+
+### Asynchronous Activities
+
+- [Learning R](https://www.linkedin.com/learning/learning-r-2/r-for-data-science),
+1 - 4
