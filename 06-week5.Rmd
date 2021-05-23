@@ -1,1 +1,20 @@
 # Week 5
+
+Data Visualization in R with ggplot2 > Week 2
+
+## Bar Plots Part 1, 2
+
+```{r, code = readLines("week5/2w2_1.R")}
+
+```
+
+## Line Plots Part 1
+
+```{r, code = readLines("week5/2w2_2.R")}
+
+```
+
+## Learning New Figures Part 1
+```{r, code = readLines("week5/2w2_3.R")}
+
+```

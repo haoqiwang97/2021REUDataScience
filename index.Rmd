@@ -12,6 +12,12 @@ output:
   bookdown::gitbook:
     includes:
       after_body: disqus.html
+    config:
+      download: false
+      sharing:
+        facebook: false
+        twitter: false
+        all: false
 ---
 
 # Plan
@@ -21,8 +27,8 @@ output:
 - Main materials:  
     <!-- - Linkedin learning, [Learning R](https://www.linkedin.com/learning/learning-r-2/r-for-data-science) -->
     <!-- - Edx, [Data Science: Visualization](https://courses.edx.org/courses/course-v1:HarvardX+PH125.2x+1T2021/course/) -->
-    - [Getting Started with Data Visualization in R](https://www.coursera.org/learn/jhu-getting-started-data-viz-r?specialization=jhu-data-visualization-dashboarding-with-r)
-    - [Data Visualization in R with ggplot2](https://www.coursera.org/learn/jhu-data-visualization-r?specialization=jhu-data-visualization-dashboarding-with-r)
+    - (Coursera) [Getting Started with Data Visualization in R](https://www.coursera.org/learn/jhu-getting-started-data-viz-r?specialization=jhu-data-visualization-dashboarding-with-r), week 1, 2, 3
+    - (Coursera) [Data Visualization in R with ggplot2](https://www.coursera.org/learn/jhu-data-visualization-r?specialization=jhu-data-visualization-dashboarding-with-r), week 1, 2
     - **Audit** the course, buying the courses is optional
     - Other resources: [SDS 375](https://wilkelab.org/SDS375/schedule.html)
 
@@ -33,6 +39,6 @@ output:
 - Asynchronous work: working through video tutorials  
 
 - Synchronous support
-    - Answer questions
+    - Answer questions. If you have any questions during learning, leave them as comments at the bottom.
     - Other tutorials
     

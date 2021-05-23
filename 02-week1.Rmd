@@ -2,6 +2,8 @@
 
 Getting Started with Data Visualization in R > Week 1
 
+- [Base R cheat sheet](https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf)
+
 ```{r, include = FALSE}
 source("_common.R")
 ```

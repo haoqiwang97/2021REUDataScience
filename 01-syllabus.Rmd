@@ -1,13 +1,61 @@
 # Syllabus
 
+Materials (R codes) are adapted from 
+[Getting Started with Data Visualization in R](https://www.coursera.org/learn/jhu-getting-started-data-viz-r?specialization=jhu-data-visualization-dashboarding-with-r), 
+[Data Visualization in R with ggplot2](https://www.coursera.org/learn/jhu-data-visualization-r?specialization=jhu-data-visualization-dashboarding-with-r) and only for learning and discussion. 
+You can use the codes from Coursera or look at them here.
+    
 ## Week 1
 
 ### Synchronous Activities
 
-- Presentation: some codes in R?
+- Answer questions
 
 ### Asynchronous Activities
 
 - [Getting Started with Data Visualization in R](https://www.coursera.org/learn/jhu-getting-started-data-viz-r?specialization=jhu-data-visualization-dashboarding-with-r),
 week 1
-- [Base R cheat sheet](https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf)
+
+## Week 2
+
+### Synchronous Activities
+
+- Answer questions
+
+### Asynchronous Activities
+
+- [Getting Started with Data Visualization in R](https://www.coursera.org/learn/jhu-getting-started-data-viz-r?specialization=jhu-data-visualization-dashboarding-with-r),
+week 2
+
+## Week 3
+
+### Synchronous Activities
+
+- Answer questions
+
+### Asynchronous Activities
+
+- [Getting Started with Data Visualization in R](https://www.coursera.org/learn/jhu-getting-started-data-viz-r?specialization=jhu-data-visualization-dashboarding-with-r),
+week 3
+
+## Week 4
+
+### Synchronous Activities
+
+- Answer questions
+
+### Asynchronous Activities
+
+- [Data Visualization in R with ggplot2](https://www.coursera.org/learn/jhu-data-visualization-r?specialization=jhu-data-visualization-dashboarding-with-r),
+week 1
+
+## Week 5
+
+### Synchronous Activities
+
+- Answer questions
+
+### Asynchronous Activities
+
+- [Data Visualization in R with ggplot2](https://www.coursera.org/learn/jhu-data-visualization-r?specialization=jhu-data-visualization-dashboarding-with-r),
+week 2
