@@ -1,0 +1,42 @@
+# Week 1
+
+Getting Started with Data Visualization in R > Week 1
+
+```{r, include = FALSE}
+source("_common.R")
+```
+
+## Installing R and Getting Started
+
+```{r include=FALSE}
+# knitr::spin("week1/1w1_1.R")
+# {r child = 'week1/1w1_1.R'}
+```
+
+## R basics
+
+### Basic R
+```{r, code = readLines("week1/1w1_1.R")}
+
+```
+
+### Functions in R
+
+```{r, code = readLines("week1/1w1_2.R")}
+
+```
+
+## Dataframe
+```{r, code = readLines("week1/1w1_3.R")}
+
+```
+
+## Basics of Importing Data into R
+```{r, code = readLines("week1/1w1_4.R")}
+
+```
+
+## Base R Visualizations
+```{r, code = readLines("week1/1w1_5.R")}
+
+```

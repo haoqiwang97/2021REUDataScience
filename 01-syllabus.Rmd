@@ -1,6 +1,6 @@
 # Syllabus
 
-## Week 1: Install R, R studio
+## Week 1
 
 ### Synchronous Activities
 
@@ -8,5 +8,6 @@
 
 ### Asynchronous Activities
 
-- [Learning R](https://www.linkedin.com/learning/learning-r-2/r-for-data-science),
-1 - 4
+- [Getting Started with Data Visualization in R](https://www.coursera.org/learn/jhu-getting-started-data-viz-r?specialization=jhu-data-visualization-dashboarding-with-r),
+week 1
+- [Base R cheat sheet](https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf)

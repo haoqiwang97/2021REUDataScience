@@ -1,0 +1,23 @@
+# Week 2
+
+Getting Started with Data Visualization in R > Week 2
+
+```{r, include = FALSE}
+source("_common.R")
+```
+
+## Introduction to the tidyverse
+
+```{r eval=FALSE}
+install.packages("tidyverse")
+```
+
+## Data import and structure in the tidyverse
+## Filtering, selecting, recoding, renaming, and piping
+## Recoding, Renaming, and Calculating Columns
+## Grouping and summarizing data
+
+```{r, code = readLines("week2/1w2_1.R")}
+
+```
+

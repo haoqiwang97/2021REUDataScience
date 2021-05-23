@@ -7,16 +7,24 @@ documentclass: book
 bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
-description: "This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook."
+description: "2021 REU Data Science Training"
+output:
+  bookdown::gitbook:
+    includes:
+      after_body: disqus.html
 ---
 
 # Plan
 
 - Knowledge Gained: R, data wrangling, data visualization  
 
-- Free resources:  
-    - Linkedin learning, [Learning R](https://www.linkedin.com/learning/learning-r-2/r-for-data-science)
-    - Edx, [Data Science: Visualization](https://courses.edx.org/courses/course-v1:HarvardX+PH125.2x+1T2021/course/)
+- Main materials:  
+    <!-- - Linkedin learning, [Learning R](https://www.linkedin.com/learning/learning-r-2/r-for-data-science) -->
+    <!-- - Edx, [Data Science: Visualization](https://courses.edx.org/courses/course-v1:HarvardX+PH125.2x+1T2021/course/) -->
+    - [Getting Started with Data Visualization in R](https://www.coursera.org/learn/jhu-getting-started-data-viz-r?specialization=jhu-data-visualization-dashboarding-with-r)
+    - [Data Visualization in R with ggplot2](https://www.coursera.org/learn/jhu-data-visualization-r?specialization=jhu-data-visualization-dashboarding-with-r)
+    - **Audit** the course, buying the courses is optional
+    - Other resources: [SDS 375](https://wilkelab.org/SDS375/schedule.html)
 
 - Software: R  
 
@@ -24,4 +32,7 @@ description: "This is a minimal example of using the bookdown package to write a
 
 - Asynchronous work: working through video tutorials  
 
-- Synchronous support: presentations and tutorials/demos led by grad student (Haoqi) to introduce more  
+- Synchronous support
+    - Answer questions
+    - Other tutorials
+    

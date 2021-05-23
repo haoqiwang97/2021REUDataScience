@@ -1,0 +1,13 @@
+# Week 4
+
+Data Visualization in R with ggplot2 > Week 1
+
+```{r, include = FALSE}
+source("_common.R")
+```
+
+## Getting Started with ggplot Part 1, 2
+
+```{r, code = readLines("week4/2w1_1.R")}
+
+```
