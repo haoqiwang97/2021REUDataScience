@@ -7,18 +7,22 @@ You can use the codes from Coursera or look at them here.
     
 ## Week 1
 
-### Synchronous Activities
+### Synchronous Activities, 2021-06-03, 10:30 AM
 
 - Answer questions
 
 ### Asynchronous Activities
 
+- Get registered on [Coursera](https://www.coursera.org/)
+- Enroll the course [Getting Started with Data Visualization in R](https://www.coursera.org/learn/jhu-getting-started-data-viz-r?specialization=jhu-data-visualization-dashboarding-with-r). **Audit** the course, buying the course is optional.
 - [Getting Started with Data Visualization in R](https://www.coursera.org/learn/jhu-getting-started-data-viz-r?specialization=jhu-data-visualization-dashboarding-with-r),
 week 1
+- Codes in the videos can be found at: https://bookdown.org/haoqi3329/2021REUDataScience/week-1-1.html
+- If you have any questions during learning, leave them as comments at the bottom. You may need to register first to leave comments.
 
 ## Week 2
 
-### Synchronous Activities
+### Synchronous Activities, 2021-06-10, 10:30 AM
 
 - Answer questions
 
@@ -29,7 +33,7 @@ week 2
 
 ## Week 3
 
-### Synchronous Activities
+### Synchronous Activities, 2021-06-17, 10:30 AM
 
 - Answer questions
 
@@ -40,7 +44,7 @@ week 3
 
 ## Week 4
 
-### Synchronous Activities
+### Synchronous Activities, 2021-06-24, 10:30 AM
 
 - Answer questions
 
@@ -51,7 +55,7 @@ week 1
 
 ## Week 5
 
-### Synchronous Activities
+### Synchronous Activities, 2021-07-01, 10:30 AM
 
 - Answer questions
 
@@ -59,3 +63,15 @@ week 1
 
 - [Data Visualization in R with ggplot2](https://www.coursera.org/learn/jhu-data-visualization-r?specialization=jhu-data-visualization-dashboarding-with-r),
 week 2
+
+## Rest
+
+2021-07-08, 10:30 AM
+
+2021-07-15, 10:30 AM
+
+2021-07-22, 10:30 AM
+
+2021-07-29, 10:30 AM
+
+2021-08-04, 10:30 AM
