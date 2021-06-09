@@ -30,7 +30,10 @@ output:
     - (Coursera) [Getting Started with Data Visualization in R](https://www.coursera.org/learn/jhu-getting-started-data-viz-r?specialization=jhu-data-visualization-dashboarding-with-r), week 1, 2, 3
     - (Coursera) [Data Visualization in R with ggplot2](https://www.coursera.org/learn/jhu-data-visualization-r?specialization=jhu-data-visualization-dashboarding-with-r), week 1, 2
     - **Audit** the course, buying the courses is optional
-    - Other resources: [SDS 375](https://wilkelab.org/SDS375/schedule.html)
+    
+- Other resources
+    - [SDS 375](https://wilkelab.org/SDS375/schedule.html)
+    - [R for Data Science](https://r4ds.had.co.nz/)
 
 - Software: R  
 
