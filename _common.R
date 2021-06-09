@@ -1,4 +1,7 @@
 set.seed(1014)
+# detach("package:MASS", unload = TRUE)
+# detach("package:reshape2", unload = TRUE)
+# detach("package:plyr", unload = TRUE) 
 
 knitr::opts_chunk$set(
   comment = "#>",
