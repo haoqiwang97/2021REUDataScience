@@ -10,6 +10,7 @@ You can use the codes from Coursera or look at them here.
 ### Synchronous Activities, 2021-06-03, 10:30 AM
 
 - Answer questions
+- Tidy data
 
 ### Asynchronous Activities
 
