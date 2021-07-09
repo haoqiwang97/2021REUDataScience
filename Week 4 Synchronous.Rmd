@@ -1,0 +1,539 @@
+---
+#############################################################
+#                                                           #
+# Click on "Run Document" in RStudio to run this worksheet. #
+#                                                           #
+#############################################################
+title: "REU ggplot"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r include=FALSE}
+list.of.packages <-
+  c("shiny",
+    "learnr",
+    "lubridate",
+    "palmerpenguins",
+    "ggforce",
+    "ggridges")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+```
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(lubridate)
+knitr::opts_chunk$set(echo = FALSE, comment = "")
+
+# data prep
+temperatures <- read_csv("https://wilkelab.org/SDS375/datasets/tempnormals.csv") %>%
+  mutate(
+    location = factor(
+      location, levels = c("Death Valley", "Houston", "San Diego", "Chicago")
+    )
+  ) %>%
+  select(location, day_of_year, month, temperature)
+
+temps_houston <- filter(temperatures, location == "Houston")
+```
+
+## Warm-up
+
+Material adapted from https://wilkelab.org/SDS375/schedule.html  
+ggplot Cheat sheet: https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf
+
+
+
+```{r library-calls, echo = TRUE, eval = FALSE}
+# load required library
+library(tidyverse)
+```
+
+The dataset we will be working with contains the average temperature for each day of the year for Houston, TX:
+```{r temps-houston, echo = TRUE}
+temps_houston
+```
+
+### line, scatter plots
+
+In the most basic use of ggplot, we call the `ggplot()` function with a dataset and an aesthetic mapping (created with `aes()`), and then we add a geom, such as `geom_line()` to draw lines or `geom_point()` to draw points.
+
+Try this for yourself. Map the column `day_of_year` onto the x axis and the column `temperature` onto the y axis, and use `geom_line()` to display the data.
+
+```{r ggplot, exercise=TRUE}
+ggplot(temps_houston, aes(x = ___, y = ___)) +
+  ___()
+```
+
+```{r ggplot-hint}
+ggplot(temps_houston, aes(x = day_of_year, y = temperature)) +
+  geom____()
+```
+
+```{r ggplot-solution}
+ggplot(temps_houston, aes(x = day_of_year, y = temperature)) +
+  geom_line()
+```
+
+Try again. Now use `geom_point()` instead of `geom_line()`.
+
+```{r ggplot2, exercise=TRUE}
+ggplot(temps_houston, aes(x = day_of_year, y = temperature)) +
+  ___()
+```
+
+```{r ggplot2-solution}
+ggplot(temps_houston, aes(x = day_of_year, y = temperature)) +
+  geom_point()
+```
+
+And now swap which column you map to x and which to y.
+
+```{r ggplot3, exercise=TRUE}
+ggplot(temps_houston, aes(x = ___, y = ___)) +
+  geom_point()
+```
+
+```{r ggplot3-solution}
+ggplot(temps_houston, aes(x = temperature, y = day_of_year)) +
+  geom_point()
+```
+
+### boxplot
+
+You can use other geoms to make different types of plots. For example, `geom_boxplot()` will make boxplots. For boxplots, we frequently want categorical data on the x or y axis. For example, we might want a separate boxplot for each month. Try this out. Put `month` on the x axis, `temperature` on the y axis, and use `geom_boxplot()`.
+
+```{r ggplot-boxplot, exercise=TRUE}
+ggplot(temps_houston, aes(x = ___, y = ___)) +
+  ___()
+```
+
+```{r ggplot-boxplot-hint}
+ggplot(temps_houston, aes(x = month, y = temperature)) +
+  ___()
+```
+
+```{r ggplot-boxplot-solution}
+ggplot(temps_houston, aes(x = month, y = temperature)) +
+  geom_boxplot()
+```
+
+Now put the month on the y axis and the temperature on the x axis.
+
+```{r ggplot-boxplot2, exercise=TRUE}
+ggplot(___) +
+  ___()
+```
+
+```{r ggplot-boxplot2-hint}
+ggplot(temps_houston, aes(x = ___, y = ___)) +
+  geom_boxplot()
+```
+
+```{r ggplot-boxplot2-solution}
+ggplot(temps_houston, aes(x = temperature, y = month)) +
+  geom_boxplot()
+```
+
+
+### Adding color
+
+Next we will be working with the dataset `temperatures`, which is similar to `temps_houston` but contains data for three more locations:
+```{r temperatures, echo = TRUE}
+temperatures
+```
+
+Make a line plot of `temperature` against `day_of_year`, using the `color` aesthetic to color the lines by location. 
+
+```{r ggplot-color, exercise=TRUE}
+ggplot(temperatures, aes(x = ___, y = ___, color = ___)) +
+  ___()
+```
+
+```{r ggplot-color-hint}
+ggplot(temperatures, aes(x = day_of_year, y = temperature, color = ___)) +
+  geom_line()
+```
+
+```{r ggplot-color-solution}
+ggplot(temperatures, aes(x = day_of_year, y = temperature, color = location)) +
+  geom_line()
+```
+
+
+Try again, this time using `location` as the location along the y axis and `temperature` for the color. This plot requires `geom_point()` to look good.
+
+```{r ggplot-color2, exercise=TRUE}
+ggplot(___) +
+  ___()
+```
+
+```{r ggplot-color2-hint}
+ggplot(temperatures, aes(x = ___, y = ___, color = ___)) +
+  geom_point()
+```
+
+```{r ggplot-color2-solution}
+ggplot(temperatures, aes(x = day_of_year, y = location, color = temperature)) +
+  geom_point()
+```
+
+(Hint: Try `geom_point(size = 5)` to create larger points.)
+
+### Using the `fill` aesthetic
+
+Some geoms use a `fill` aesthetic, which is similar to `color` but applies to shaded areas. (`color` applies to lines and points.) For example, we can use the `fill` aesthetic with `geom_boxplot()` to color the interior of the box. Try this yourself. Plot `month` on x, `temperature` on y, and color the interior of the box by location.
+
+```{r ggplot-fill, exercise=TRUE}
+ggplot(temperatures, ___) +
+  ___()
+```
+
+```{r ggplot-fill-hint}
+ggplot(temperatures, aes(x = month, y = ___, fill = ___)) +
+  geom_boxplot()
+```
+
+```{r ggplot-fill-solution}
+ggplot(temperatures, aes(x = month, y = temperature, fill = location)) +
+  geom_boxplot()
+```
+
+Can you color the lines of the boxplot by location and the interior by month? Try it.
+
+```{r ggplot-color-fill, exercise=TRUE}
+ggplot(temperatures, ___) +
+  geom_boxplot()
+```
+
+```{r ggplot-color-fill-hint}
+ggplot(temperatures, aes(x = month, y = temperature, color = ___, fill = ___)) +
+  geom_boxplot()
+```
+
+```{r ggplot-color-fill-solution}
+ggplot(temperatures, aes(x = month, y = temperature, color = location, fill = month)) +
+  geom_boxplot()
+```
+
+## Visualize distribution - histogram
+```{r include=FALSE}
+# data prep
+titanic <- read_csv("https://wilkelab.org/SDS375/datasets/titanic.csv") %>%
+  select(age, sex, class, survived) %>%
+  arrange(age, sex, class)
+```
+
+Titanic dataset.
+
+```{r}
+titanic
+```
+
+We start by drawing a histogram of the passenger ages (column `age` in the dataset `titanic`). We can do this in ggplot with the geom `geom_histogram()`. Try this for yourself.
+
+```{r titanic-hist, exercise=TRUE}
+ggplot(titanic, aes(___)) +
+  ___
+```
+
+```{r titanic-hist-solution}
+ggplot(titanic, aes(age)) +
+  geom_histogram()
+```
+
+If you don't specify how many bins you want or how wide you want them to be, `geom_histogram()` will make an automatic choice, but it will also give you a warning that the automatic choice is probably not good. Make a better choice by setting the `binwidth` and `center` parameters. Try the values 5 and 2.5, respectively.
+
+```{r titanic-hist2, exercise=TRUE}
+ggplot(titanic, aes(age)) +
+  geom_histogram(___)
+```
+
+```{r titanic-hist2-hint}
+ggplot(titanic, aes(age)) +
+  geom_histogram(binwidth = ___, center = ___)
+```
+
+```{r titanic-hist2-solution}
+ggplot(titanic, aes(age)) +
+  geom_histogram(binwidth = 5, center = 2.5)
+```
+
+### Density plots
+
+Density plots are a good alternative to histograms. We can create them with `geom_density()`. Try this out by drawing a density plot of the passenger ages (column `age` in the dataset `titanic`). Also, by default `geom_density()` does not draw a filled area under the density line. We can change this by setting an explicit fill color, e.g. "cornsilk".
+
+```{r titanic-dens, exercise=TRUE}
+ggplot(titanic, aes(___)) +
+  ___
+```
+
+```{r titanic-dens-hint}
+ggplot(titanic, aes(age)) +
+  geom_density(___)
+```
+
+```{r titanic-dens-solution}
+ggplot(titanic, aes(age)) +
+  geom_density(fill = "cornsilk")
+```
+
+### Violin, jitter plots
+```{r include=FALSE}
+# data prep
+lincoln_temps <- readRDS(url("https://wilkelab.org/SDS375/datasets/lincoln_temps.rds"))
+```
+
+Temperature dataset.
+
+```{r}
+lincoln_temps
+```
+
+We start by drawing the distributions of mean temperatures for each month of the year (columns `month` and `mean_temp` in the dataset `lincoln_temps`), using boxplots. We can do this in ggplot with the geom `geom_boxplot()`. Try this for yourself.
+
+```{r lincoln-box, exercise=TRUE}
+ggplot(lincoln_temps, aes(___)) +
+  ___
+```
+
+```{r lincoln-box-hint}
+ggplot(lincoln_temps, aes(x = ___, y = ___)) +
+  geom_boxplot()
+```
+
+```{r lincoln-box-solution}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_boxplot()
+```
+
+Next, do the same but now using violins (`geom_violin()`) instead of boxplots.
+
+```{r lincoln-violin, exercise = TRUE}
+ggplot(lincoln_temps, aes(x = ___, y = ___)) +
+  ___
+```
+
+```{r lincoln-violin-solution}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_violin()
+```
+
+Next, do the same but now using jitters (`geom_jitter()`) instead of boxplots.
+
+```{r lincoln-jitter, exercise = TRUE}
+ggplot(lincoln_temps, aes(x = ___, y = ___)) +
+  ___
+```
+
+```{r lincoln-jitter-solution}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_jitter(position=position_jitter(0.2))
+```
+
+### Sina plots
+
+```{r include=FALSE}
+library("ggforce")
+library("ggridges")
+```
+
+We can create a combination of jitter (strip charts) and violin plots by making sina plots, which jitter points into the shape of a violin.
+
+```{r lincoln-sina, exercise = TRUE}
+ggplot(lincoln_temps, aes(x = ___, y = ___)) +
+  geom_violin(___) +
+  geom_jitter(___)
+```
+
+```{r lincoln-sina-solution}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_violin(color = NA, fill = "cornsilk") +  # `NA` means no color
+  geom_jitter(position=position_jitter(0.2), size = 0.75)
+```
+
+We can do this with `geom_sina()` from the **ggforce** package. Try this out.
+
+```{r lincoln-sina2, exercise = TRUE}
+ggplot(lincoln_temps, aes(x = ___, y = ___)) +
+  geom_violin(___) +
+  ___
+```
+
+```{r lincoln-sina2-solution}
+ggplot(lincoln_temps, aes(x = month, y = mean_temp)) +
+  geom_violin(color = NA, fill = "cornsilk") +
+  geom_sina(size = 0.75)
+```
+
+### Ridgeline plots
+
+As the last alternative for visualizing multiple distributions at once, we will make ridgeline plots. These are multiple density plots staggered vertically. In ridgeline plots, we normally map the grouping variable (e.g. here, the month) to the y axis and the dependent variable (e.g. here, the mean temperature) to the x axis.
+
+We can create ridgeline plots using `geom_density_ridges()` from the **ggridges** package. Try this out. Use the column `month_long` instead of `month` for the name of the month to get a slightly nicer plot. Hint: If you get an error about a missing y aesthetic you need to swap your x and y mappings.
+
+```{r lincoln-ridges, exercise = TRUE}
+ggplot(lincoln_temps, aes(x = ___, y = ___)) +
+  ___
+```
+
+```{r lincoln-ridges-solution}
+ggplot(lincoln_temps, aes(x = mean_temp, y = month_long)) +
+  geom_density_ridges()
+```
+
+<!-- What happens when you use `month` instead of `month_long`? Can you explain why? -->
+
+It is often a good idea to prune the ridgelines once they are close to zero. You can do this with the parameter `rel_min_height`, which takes a numeric value relative to the maximum height of any ridgeline anywhere in the plot. So, `rel_min_height = 0.01` would prune all lines that are less than 1% of the maximum height in the plot.
+
+```{r lincoln-ridges2, exercise = TRUE}
+ggplot(lincoln_temps, aes(x = ___, y = ___)) +
+  geom_density_ridges(___)
+```
+
+```{r lincoln-ridges2-hint}
+ggplot(lincoln_temps, aes(x = mean_temp, y = month_long)) +
+  geom_density_ridges(rel_min_height = ___)
+```
+
+```{r lincoln-ridges2-solution}
+ggplot(lincoln_temps, aes(x = mean_temp, y = month_long)) +
+  geom_density_ridges(rel_min_height = 0.01)
+```
+
+## Visualize amounts - barplot
+
+```{r}
+# Data from Box Office Mojo for Dec. 22-24, 2017. 
+boxoffice <- tibble(
+  rank = 1:5,
+  title = c("Star Wars", "Jumanji", "Pitch Perfect 3", "Greatest Showman", "Ferdinand"),
+  amount = c(71.57, 36.17, 19.93, 8.81, 7.32) # million USD
+)
+```
+
+For the `boxoffice` dataset, we want to draw the amount (Weekend gross, in million USD) for each movie as a bar.
+
+```{r boxoffice2, echo = TRUE}
+boxoffice
+```
+
+Somewhat confusingly, the ggplot geom that does this is called `geom_col()`. (There is also a `geom_bar()`, but it works differently. We'll get to that later in this tutorial.) Make a bar plot of `amount` versus `title`. This means `amount` goes on the y axis and `title` on the x axis.
+
+```{r geom-col, exercise=TRUE}
+ggplot(boxoffice, aes(x = ___, y = ___)) +
+  ___()
+```
+
+```{r geom-col-hint}
+ggplot(boxoffice, aes(x = ___, y = ___)) +
+  geom_col()
+```
+
+```{r geom-col-solution}
+ggplot(boxoffice, aes(x = title, y = amount)) +
+  geom_col()
+```
+
+Now flip which column you map onto x and which onto y.
+
+```{r geom-col2, exercise=TRUE}
+ggplot(boxoffice, aes(x = ___, y = ___)) +
+  ___()
+```
+
+```{r geom-col2-hint}
+ggplot(boxoffice, aes(x = ___, y = ___)) +
+  geom_col()
+```
+
+```{r geom-col2-solution}
+ggplot(boxoffice, aes(x = amount, y = title)) +
+  geom_col()
+```
+
+The x-axis label should specify that the amount is in million USD, and the y axis doesn't need the word "title". Use `xlab()` and `ylab()` to make these changes to the plot.
+
+```{r geom-col3, exercise=TRUE}
+ggplot(boxoffice, aes(x = amount, y = title)) +
+  geom_col() +
+  ___() +
+  ___()
+```
+
+```{r geom-col3-hint}
+ggplot(boxoffice, aes(x = amount, y = title)) +
+  geom_col() +
+  xlab(___) +
+  ylab(___)
+```
+
+```{r geom-col3-solution}
+ggplot(boxoffice, aes(x = amount, y = title)) +
+  geom_col() +
+  xlab("weekend gross (million USD)") +
+  ylab(NULL) # NULL means nothing, don't show a y label
+```
+
+### Getting bars into the right order
+
+Whenever we are making bar plots, we need to think about the correct order of the bars. By default, ggplot uses alphabetic ordering, but that is rarely appropriate. If there is no inherent ordering (such as, for example, a temporal progression), then it is usually best to order by the magnitude of the values, i.e., sort the bars by length.
+
+We can do this with the `fct_reorder()` function, which takes two arguments: The categorical variable we want to re-order, and the values by which we want to order. Here, the categorical variable is the column `title` and the values are in the column `amount`. We can apply the `fct_reorder()` function right inside the `aes()` statement.
+
+```{r geom-col-sorted, exercise=TRUE}
+ggplot(boxoffice, aes(x = amount, y = ___)) +
+  geom_col() +
+  xlab("weekend gross (million USD)") +
+  ylab(NULL)
+```
+
+```{r geom-col-sorted-hint}
+ggplot(boxoffice, aes(x = amount, y = fct_reorder(___, ___))) +
+  geom_col() +
+  xlab("weekend gross (million USD)") +
+  ylab(NULL)
+```
+
+```{r geom-col-sorted-solution}
+ggplot(boxoffice, aes(x = amount, y = fct_reorder(title, amount))) +
+  geom_col() +
+  xlab("weekend gross (million USD)") +
+  ylab(NULL)
+```
+
+### Drawing bars based on a count
+
+```{r setup2, include=FALSE}
+library(palmerpenguins)
+penguins_nomissing <- na.omit(penguins) # remove all rows with any missing values
+```
+
+The `boxoffice` dataset contains individual values, the dollar amounts, that we wanted to visualize with bars. Often, however, we encounter a slightly different scenario: A dataset doesn't contain the numeric amounts directly, but instead contains observations we want to count. For example, consider the `penguins_nomissing` dataset:
+
+```{r penguins2, echo = TRUE}
+penguins_nomissing
+```
+
+It contains one row per penguin. If we want to make a bar plot of the number of penguins of each species (Adelie, Chinstrap, Gentoo), we cannot use `geom_col()` as before, because the dataset doesn't have a column that contains these counts.
+
+The solution here is to use `geom_bar()`, which performs a count and then displays the result of that count. Because `geom_bar()` counts automatically, you only have to provide it with a single aesthetic, which specifies the data column in which you are counting.
+
+Try this out. Make a bar plot of the number of penguins per species. Map the penguin species onto the x axis.
+
+```{r geom-bar, exercise=TRUE}
+ggplot(penguins_nomissing, aes(___)) +
+  geom_bar()
+```
+
+```{r geom-bar-hint}
+ggplot(penguins_nomissing, aes(x = ___)) +
+  geom_bar()
+```
+
+```{r geom-bar-solution}
+ggplot(penguins_nomissing, aes(x = species)) +
+  geom_bar()
+```

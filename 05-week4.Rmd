@@ -1,4 +1,4 @@
-# Week 4
+# Week 4 Asynchronous
 
 Data Visualization in R with ggplot2 > Week 1
 
@@ -15,5 +15,15 @@ source("_common.R")
 ## Distributions
 
 ```{r, code = readLines("week4/2w1_2.R")}
+
+```
+
+## Practices for week 4
+```{r child = 'week4/week4_practice.Rmd'}
+
+```
+
+## Practices for week 5
+```{r child = 'week5/week5_practice.Rmd'}
 
 ```

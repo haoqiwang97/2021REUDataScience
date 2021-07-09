@@ -1,4 +1,4 @@
-# Week 3
+# Week 3 Asynchronous
 
 Getting Started with Data Visualization in R > Week 3
 
@@ -48,3 +48,610 @@ https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf
 ## qplots and closing thoughts
 ```{r child = 'week3/1w3_2.Rmd'}
 ```
+
+## Practices
+
+```{r include=FALSE}
+#####DO NOT MODIFY THIS CODE
+# knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+# library(knitr)
+#####DO NOT MODIFY THIS CODE - This will import the survey data we have been working with in this course.
+dat <- drop_na(read.csv(url("https://www.dropbox.com/s/uhfstf6g36ghxwp/cces_sample_coursera.csv?raw=1")))
+```
+
+### Problem 1 
+
+Create a vector of five numbers of your choice between 0 and 10, save that vector to an object, and use the sum() function to calculate the sum of the numbers.
+
+```{r,problem1}
+a <- c(1, 3, 5, 7, 9)
+sum(a)
+```
+
+### Problem 2
+
+Create a data frame that includes two columns. One column must have the numbers 1 through 5, and the other column must have the numbers 6 through 10. The first column must be named "alpha" and the second column must be named "beta". Name the object "my_dat". Display the data.
+
+Put your code and solution here:
+
+```{r,problem2}
+alpha <- 1:5
+beta <- 6:10
+my_dat <- data.frame(alpha, beta)
+my_dat
+```
+
+### Problem 3 
+
+Using the data frame created in Problem 2, use the summary() command a create a five-number summary for the column named "beta".
+
+Put your code and solution here:
+
+```{r,problem3}
+summary(my_dat$beta)
+```
+
+### Problem 4
+
+There is code for importing the example survey data that will run automatically in the setup chunk for this report (Line 13). Using that data, make a boxplot of the Family Income column using the Base R function (not a figure drawn using qplot). Include your name in the title for the plot. Your name should be in the title. Relabel that x-axis as "Family Income".
+
+Hint: consult the codebook to identify the correct column name for the family income question.
+
+Put your code and solution here:
+
+```{r,problem4}
+boxplot(dat$faminc_new, 
+        main = "Haoqi's Boxplot of Family Income",
+        xlab = "Family Income")
+```
+
+### Problem 5
+
+Using the survey data, filter to subset the survey data so you only have male survey respondents who live in the northwest or midwest of the United States, are married, and identify as being interested in the news most of the time. 
+
+Use the str() function to provide information about the resulting dataset.
+
+Put your code and solution here:
+ 
+```{r problem5,include=TRUE,echo=TRUE}
+dat %>% glimpse()
+```
+
+```{r}
+# male: gender == 1
+# northwest or midwest: region %in% c(1, 2)
+# married: marstat == 1
+# interested in the news most of the time: newsint == 1
+
+dat %>% 
+  filter(gender == 1 & region %in% c(1, 2) & marstat == 1 & newsint == 1) %>% 
+  str()
+```
+
+### Problem 6
+
+Filter the data the same as in Problem 5. Use a R function to create a frequency table for the responses for the question asking whether these survey respondents are invested in the stock market. 
+
+Put your code and solution here:
+
+```{r problem6,include=TRUE,echo=TRUE}
+dat %>% 
+  filter(gender == 1 & region %in% c(1, 2) & marstat == 1 & newsint == 1) %>% 
+  count(investor)
+``` 
+
+### Problem 7
+
+Going back to using all rows in the dataset, create a new column in the data using mutate that is equal to either 0, 1, or 2, to reflect whether the respondent supports increasing the standard deduction from 12,000 to 25,000, supports cutting the corporate income tax rate from 39 to 21 percent, or both. Name the column "tax_scale". Hint: you'll need to use recode() as well.
+ 
+Display the first twenty elements of the new column you create.
+
+Put your code and solution here:
+
+```{r problem7,include=TRUE,echo=TRUE}
+# 0: If the respondent supports neither of the two initiatives
+# CC18_325d == 2 & CC18_325a == 2
+# 1: If the respondent supports either of the two initiatives
+# (CC18_325a == 1 & CC18_325d == 2) | (CC18_325a == 2 & CC18_325d == 1)
+# 2: If the respondent supports both initiatives
+# CC18_325d == 1 & CC18_325a == 1
+
+dat %>% 
+  mutate(tax_scale = case_when(
+    (CC18_325d == 2 & CC18_325a == 2) ~ 0,
+    ((CC18_325a == 1 & CC18_325d == 2) | (CC18_325a == 2 & CC18_325d == 1)) ~ 1,
+    (CC18_325d == 1 & CC18_325a == 1) ~ 2
+  )) %>% 
+  select(tax_scale) %>% 
+  pull() %>% 
+  .[1:20]
+```
+
+### Problem 8
+
+Use a frequency table command to show how many 0s, 1s, and 2s are in the column you created in Problem 7.
+
+Put your code and solution here:
+
+```{r problem8,include=TRUE,echo=TRUE}
+dat %>% 
+  mutate(tax_scale = case_when(
+    (CC18_325d == 2 & CC18_325a == 2) ~ 0,
+    ((CC18_325a == 1 & CC18_325d == 2) | (CC18_325a == 2 & CC18_325d == 1)) ~ 1,
+    (CC18_325d == 1 & CC18_325a == 1) ~ 2
+  )) %>% 
+  select(tax_scale) %>% 
+  table()
+```
+
+### Problem 9
+
+Again using all rows in the original dataset, use summarise and group_by to calculate the average (mean) job of approval for President Trump in each of the four regions listed in the "region" column.
+
+Put your code and solution here:
+ 
+```{r problem9}
+dat %>% 
+  group_by(region) %>% 
+  summarise(Trump_Approve_Mean = mean(CC18_308a))
+```
+ 
+### Problem 10
+
+Again start with all rows in the original dataset, use summarise() to create a summary table for survey respondents who are not investors and who have an annual family income of between \$40,000 and \$119,999 per year. The table should have the mean, median and standard deviations for the importance of religion column.
+
+Put your code and solution here:
+
+```{r problem10}
+# respondents who are not investors and who have an annual family income of between $40,000 and $119,999 per year
+# investor == 2 & faminc_new %in% c(5:10)
+
+dat %>% 
+  filter(investor == 2 & (faminc_new %in% c(5:10))) %>% 
+  summarise(`Mean Religion Imp.` = mean(pew_religimp),
+            ` Median Religion Imp.` = median(pew_religimp),
+            ` Standard Dev. Religion Imp.` = sd(pew_religimp))
+```
+
+```{r}
+dat %>% 
+  filter(investor == 2 & (faminc_new %in% c(5:10))) %>% 
+  summarise(
+    across(pew_religimp, list(Mean = mean, Median = median, SD = sd))
+  )
+```
+
+### Problem 11
+
+Use kable() and the the summarise() function to create a table with one row and three columns that provides the mean, median, and standard deviation for the column named faminc_new in the survey data.
+
+Put your code and solution here:
+
+```{r problem11}
+dat %>% 
+  summarise(
+    Mean = mean(faminc_new), 
+    Median = median(faminc_new),
+    `Std. Dev` = sd(faminc_new)
+  ) %>% 
+  knitr::kable()
+```
+
+### Problem 12
+
+With the survey data, use qplot() to make a histogram of the column named pid7. Change the x-axis label to "Seven Point Party ID" and the y-axis label to "Count".
+
+Note: you can ignore the "stat_bin()" message that R generates when you draw this. The setup for the code chunk will suppress the message.
+
+Put your code and solution here:
+
+```{r problem12,message=FALSE}
+qplot(
+  x = pid7,
+  data = dat,
+  geom = "histogram",
+  xlab = "Seven Point Party ID",
+  ylab = "Count"
+)
+```
+
+# Week 3 Synchronous
+
+## Goal
+
+- Go over practices
+- Reproducible research
+- Relational data
+- Strings, regular expression
+
+## Markdown & R Markdown
+
+[Cheat Sheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
+
+- Use R to make slides
+- Embed Code
+
+## Reproducible research
+https://bookdown.org/yihui/rmarkdown/basics.html
+
+R Markdown is great for reproducible research: it includes the source code right inside the document, which makes it easy to discover and fix problems, as well as update the output document.
+
+Scientific research that was not done in a reproducible way: e.g., cut-and-paste
+
+[A reproducible workflow](https://youtu.be/s3JldKoA0zw)
+
+[The Importance of Reproducible Research in High-Throughput Biology](https://youtu.be/7gYIs7uYbMo)
+
+
+```{r}
+library(tidyverse)
+library(nycflights13)
+```
+
+## Relational data
+
+- Typically you have many tables of data, and you must combine them to answer the questions that you’re interested in.
+- Multiple tables of data are called relational data because it is the relations, not just the individual datasets, that are important.
+- The most common place to find relational data is in a relational database management system (or RDBMS), a term that encompasses almost all modern databases.
+
+### Dataset
+
+We will use the nycflights13 package to learn about relational data. 
+
+nycflights13 contains four tibbles that are related to the flights table.
+
+This package provides the following data tables.
+
+?flights: all flights that departed from NYC in 2013
+?weather: hourly meterological data for each airport
+?planes: construction information about each plane
+?airports: airport names and locations
+?airlines: translation between two letter carrier codes and names
+
+```{r}
+flights %>% glimpse()
+```
+
+```{r}
+# airlines: full carrier name from its abbreviated code
+airlines %>% glimpse()
+```
+
+```{r}
+# airports: information about each airport, identified by the faa airport code
+airports %>% glimpse()
+```
+
+```{r}
+# planes: information about each plane, identified by its tailnum
+planes %>% glimpse()
+```
+
+```{r}
+# weather: weather at each NYC airport for each hour
+weather %>% glimpse()
+```
+
+### Database schema
+
+The relationships between the different tables
+
+```{r}
+knitr::include_graphics("relational-nycflights.png")
+```
+
+-   `flights` connects to `planes` via a single variable, `tailnum`.
+
+-   `flights` connects to `airlines` through the `carrier` variable.
+
+-   `flights` connects to `airports` in two ways: via the `origin` and `dest` variables.
+
+-   `flights` connects to `weather` via `origin` (the location), and `year`, `month`, `day` and `hour` (the time).
+
+-   Actual database can be more complicated.
+
+### Keys
+
+The variables used to connect each pair of tables are called keys.
+
+A key is a variable (or set of variables) that uniquely identifies an observation. 
+
+In simple cases, a single variable is sufficient to identify an observation. 
+
+For example, each plane is uniquely identified by its tailnum. In other cases, multiple variables may be needed. For example, to identify an observation in weather you need five variables: year, month, day, hour, and origin.
+
+There are two types of keys:
+
+- A **primary key** uniquely identifies an observation in its own table. planes$tailnum is a primary key because it uniquely identifies each plane in the planes table.
+
+- A **foreign key** uniquely identifies an observation in another table. flights$tailnum is a foreign key because it appears in the flights table where it matches each flight to a unique plane.
+
+```{r}
+# Verify if primary keys uniquely identify each observation
+planes %>% 
+  count(tailnum)
+```
+
+```{r}
+planes %>% 
+  count(tailnum) %>% 
+  filter(n > 1)
+```
+
+```{r}
+weather %>% 
+  count(year, month, day, hour, origin)
+```
+
+```{r}
+weather %>% 
+  count(year, month, day, hour, origin) %>% 
+  filter(n > 1)
+```
+
+Sometimes a table doesn’t have an explicit primary key: each row is an observation, but no combination of variables reliably identifies it.
+
+What’s the primary key in the flights table? 
+
+```{r}
+flights %>% 
+  count(year, month, day, flight) %>% 
+  filter(n > 1)
+```
+
+```{r}
+flights %>% 
+  count(year, month, day, tailnum) %>% 
+  filter(n > 1)
+```
+
+- **surrogate key**: If a table lacks a primary key, it’s sometimes useful to add one with eg, row number.
+
+```{r}
+# add one with mutate() and row_number()
+flights %>% 
+  mutate(surrogate_key = row_number()) %>% 
+  select(surrogate_key, everything())
+```
+
+A primary key and the corresponding foreign key in another table form a relation.
+
+- One-to-many. For example, each flight has one plane, but each plane has many flights.
+- 1-to-1： think of this as a special case of 1-to-many
+- many-to-many: many-to-1 relation plus a 1-to-many relation. For example, each airline flies to many airports; each airport hosts many airlines.
+
+### Example of join
+
+```{r}
+flights2 <- flights %>% 
+  select(year:day, hour, origin, dest, tailnum, carrier)
+flights2 %>% head()
+```
+
+### How to add full airline name to flights2?
+
+```{r}
+flights2 %>%
+  select(-origin, -dest) %>% 
+  left_join(airlines, by = "carrier")
+```
+
+```{r}
+x <- tribble(
+  ~key, ~val_x,
+     1, "x1",
+     2, "x2",
+     3, "x3"
+)
+y <- tribble(
+  ~key, ~val_y,
+     1, "y1",
+     2, "y2",
+     4, "y3"
+)
+
+x
+y
+```
+
+```{r}
+knitr::include_graphics("join-outer.png")
+```
+
+### Inner join
+
+An inner join matches pairs of observations whenever their keys are equal and unmatched rows are not included in the result. It's very possible to lose observations.
+
+```{r}
+x %>% 
+  inner_join(y, by = "key")
+```
+
+### Outer joins
+
+#### left join
+
+A left join keeps all observations in x.
+
+```{r}
+x %>% 
+  left_join(y, by = "key")
+```
+
+#### right join
+
+A right join keeps all observations in y.
+
+```{r}
+x %>% 
+  right_join(y, by = "key")
+```
+
+```{r}
+y %>% 
+  left_join(x, by = "key")
+```
+
+#### full join
+
+A full join keeps all observations in x and y.
+
+```{r}
+x %>% 
+  full_join(y, by = "key")
+```
+
+#### Duplicate keys
+
+- one-to-many relationship
+
+```{r}
+x <- tribble(
+  ~key, ~val_x,
+     1, "x1",
+     2, "x2",
+     2, "x3",
+     1, "x4"
+)
+y <- tribble(
+  ~key, ~val_y,
+     1, "y1",
+     2, "y2"
+)
+
+x
+y
+```
+
+```{r}
+left_join(x, y, by = "key")
+```
+
+## Strings
+
+Regular expressions: a concise language for describing patterns in strings.
+
+```{r}
+string1 <- "This is a string"
+string2 <- 'If I want to include a "quote" inside a string, I use single quotes'
+```
+
+special characters
+
+eg, `\n`, newline, `\t`, tab, `\"`, ", `\'`, '
+```{r}
+x <- "first line\nsecond line"
+cat(x)
+```
+```{r}
+# backslash
+cat("\" \n \' \t \\")
+```
+
+### Basic
+
+#### String length
+
+```{r}
+str_length(string1)
+str_length(string2)
+```
+
+#### Combine string
+
+```{r}
+str_c("x", "y", "z")
+```
+
+```{r}
+str_c("x", "y", sep = ", ")
+```
+
+#### Collapse a vector of strings
+```{r}
+str_c(c("x", "y", "z"), collapse = ", ")
+str_c(c("x", "y", "z"), collapse = "_")
+```
+
+#### Subset strings
+```{r}
+str_sub(string1, 1, 3)
+```
+
+#### Lower/higher case strings
+
+```{r}
+str_to_lower(string1)
+```
+
+```{r}
+str_to_upper(string1)
+```
+
+### Match
+
+Regexps are a very terse language that allow you to describe patterns in strings. 
+
+```{r}
+x <- c("apple", "banana", "pear")
+str_view(x, "an")
+```
+
+#### `.` matches any character 
+```{r}
+str_view(x, ".a.")
+```
+
+#### `^` matches the start
+```{r}
+x <- c("apple", "banana", "pear")
+str_view(x, "^a")
+```
+
+#### `$` matches the end
+```{r}
+str_view(x, "a$")
+```
+
+#### `\d` matches any digit
+```{r}
+str_view(c("x 1", 67), "\\d")
+```
+
+#### `\s` matches any whitespace
+```{r}
+str_view(c("x 1", 67), "\\s")
+```
+
+#### `[abc]` matches a, b, or c
+```{r}
+str_view(c("x 1", 67, 'a d', 'ar'), "[abc]")
+```
+
+#### `[^abc]` matches anything except a, b, or c
+```{r}
+str_view(c("x 1", 67, 'ac', 'ar'), "[^abc]")
+```
+
+#### Repetition, etc
+
+## Factors
+
+Factors are used to work with categorical variables. The first factor is usually used as reference.
+
+```{r}
+x1 <- c("Dec", "Apr", "Jan", "Mar")
+sort(x1)
+```
+
+```{r}
+month_levels <- c(
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+)
+
+y1 <- factor(x1, levels = month_levels)
+y1
+```
+
