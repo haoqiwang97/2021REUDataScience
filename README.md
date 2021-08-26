@@ -1,1 +1,2 @@
-This is a minimal example of a book based on R Markdown and **bookdown** (https://github.com/rstudio/bookdown). Please see the page "Get Started" at https://bookdown.org/home/about/ for how to compile this example.
+# 2021 REU Data Science training
+https://bookdown.org/haoqi3329/2021REUDataScience/
